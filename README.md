@@ -10,7 +10,7 @@ General Instructions related to Installation of git/vscode:
 installing git
 1. go into vscode
 2. select source control 
-3. install git 64bit (if windows depends per machine)
+3. install git 64bit (depends per machine)
 4. hit next and dont change any settings to finish installation
 5. get to the terminal, enter 'git status' to check git is installed
 6. git clone https://github.com/suzyobai/fall_project.git
