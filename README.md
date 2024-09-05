@@ -16,7 +16,7 @@ installing git
 6. git clone https://github.com/suzyobai/fall_project.git
 7. git pull (to get updated code from branch)
 8. create or change files make sure under the fall_project folder under ur desktop
-9. git config --global user.email <emailrelatedtogitaccount>
-10. git add <filename>
+9. git config --global user.email (emailrelatedtogitaccount)
+10. git add (filename)
 11. git commit -m "messageforcommit"
 12. git push origin (pushing files to the origin branch)
