@@ -1,6 +1,6 @@
 Authors:
 team member1: Spandana Andhavarapu
-team member2: 
+team member2: Kelly Jacinto Ozuna
 team member3: 
 team member4:
 team member5: 
