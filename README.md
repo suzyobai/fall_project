@@ -1,7 +1,7 @@
 Authors:
 team member1: Spandana Andhavarapu
 team member2: Kelly Jacinto Ozuna
-team member3: 
+team member3: Nuh Shekhey
 team member4:
 team member5: 
 
