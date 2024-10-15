@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang ="en">
+    <meta name ="viewport" content="width=device-width,
+    initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action ="/blog/add" method="post">
+        {% csrf_token %}
+        <input type = "text" name="fruits">
+        <button type="subit">add</button>
+    </form>
+
+</body>
+</html>

@@ -11,7 +11,7 @@ Django project creation guide
 Acessing an existing project such as myfirstproject
 1. cd test
 2. .\env_site\Scripts\activate.ps1
-3. cd myfirstproject
+3. cd myfirstproj
 4. python manage.py runserver
 
 Exiting a django project
