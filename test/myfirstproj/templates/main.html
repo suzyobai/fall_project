@@ -5,6 +5,11 @@
     <title>Document</title>
 </head>
 <body>
-this is main.html
+    <form action ="/blog/add" method="post">
+        {% csrf_token %}
+        <input type = "text" name="fruits">
+        <button type="subit">add</button>
+    </form>
+
 </body>
 </html>
