@@ -117,3 +117,46 @@ class ReviewFeatureTest(TestCase):
         response = self.client.get(f'/movies/{self.movie.id}/')
         self.assertContains(response, 'Amazing!')
         self.assertContains(response, '5 stars')
+        
+        
+class SearchTestCase(TestCase):
+    def setUp(self):
+        
+        self.action_genre = Genre.objects.create(name="Action")
+        self.drama_genre = Genre.objects.create(name="Drama")
+        self.english_language = Language.objects.create(name="English")
+        self.spanish_language = Language.objects.create(name="Spanish")
+
+        self.content1 = Content.objects.create(
+            title="The Hunger Games: Catching Fire",
+            release_year=2013,
+            content_type="Movie",
+            description="Katniss Everdeen and Peeta Mellark become targets of the Capitol after their victory in the 74th Hunger Games sparks a rebellion in the Districts of Panem.",
+            language=self.english_language
+        )
+        self.content1.genres.add(self.action_genre)
+
+        self.content2 = Content.objects.create(
+            title="La Casa de Papel",
+            release_year=2017,
+            content_type="TV Show",
+            description="Eight thieves take hostages and lock themselves in the Royal Mint of Spain as a criminal mastermind manipulates the police to carry out his plan",
+            language=self.spanish_language
+        )
+        self.content2.genres.add(self.drama_genre)
+
+    def test_search_genre(self):
+
+        results = Content.objects.filter(genres=self.action_genre)
+        self.assertTrue(results.exists())
+        self.assertEqual(results.first().title, "The Hunger Games: Catching Fire")
+
+    def test_search_language(self):
+        results = Content.objects.filter(language=self.spanish_language)
+        self.assertTrue(results.exists())
+        self.assertEqual(results.first().title, "La Casa de Papel")
+
+    def test_search_by_genre_and_language(self):
+        results = Content.objects.filter(genres=self.drama_genre, language=self.spanish_language)
+        self.assertTrue(results.exists())
+        self.assertEqual(results.first().title, "La Casa de Papel")
