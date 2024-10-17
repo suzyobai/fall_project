@@ -85,3 +85,35 @@ class SignInModelTest(TestCase):
         #testing the __str__ method of the SignIn model
         self.assertEqual(str(self.signin), f"SignIn for {self.user.email} on {self.signin.date_signed_in}")
 
+# Review test cases
+class ReviewFeatureTest(TestCase):
+    def setUp(self):
+        # Creating user and content (movie) instances
+        self.user = User.objects.create_user(username='testuser', password='password123')
+        self.movie = Content.objects.create(title='Test Movie', description='A great movie!', poster='test_poster.jpg')
+
+    # Test that the review prompt box appears when a user accesses the review page.
+    def test_review_prompt_box_appears(self):
+        self.client.login(username='testuser', password='password123')
+        response = self.client.get(f'/movies/{self.movie.id}/review/')
+        self.assertContains(response, 'Write your review here')
+        self.assertContains(response, 'Rating')
+        self.assertContains(response, self.movie.description)
+        self.assertContains(response, self.movie.poster.url)
+
+    # Test that a review is successfully saved when valid input is provided.
+    def test_successful_review_submission(self):
+        self.client.login(username='testuser', password='password123')
+        response = self.client.post(f'/movies/{self.movie.id}/review/', {
+            'content': 'Amazing movie!',
+            'rating': 5
+        })
+        self.assertEqual(response.status_code, 302)  # Assuming a redirect occurs after posting
+        self.assertTrue(Review.objects.filter(movie=self.movie, user=self.user).exists())
+
+    # Test that reviews are displayed on the movie page.
+    def test_view_reviews_on_movie_page(self):
+        Review.objects.create(movie=self.movie, user=self.user, content='Amazing!', rating=5)
+        response = self.client.get(f'/movies/{self.movie.id}/')
+        self.assertContains(response, 'Amazing!')
+        self.assertContains(response, '5 stars')
