@@ -3,6 +3,7 @@
 ##Definitions for data models
 
 from django.db import models
+from django.contrib.auth.models import User
 
 class Genre(models.Model):
     name = models.CharField(max_length=100, unique=True)
@@ -38,22 +39,22 @@ class Content(models.Model):
         return f"{self.title} ({self.release_year}) - {self.content_type}" 
 
 class Review(models.Model):
-    content = models.CharField(max_length=255)
-    user = models.CharField(max_length=255)
-    rating = 
-    review_description = models.CharField(max_length=1000)
-    date_created  =models.CharField(max_length=255)
+    content = models.ForeignKey(Content, on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews')
+    rating = models.PositiveIntegerField()
+    review_description = models.TextField()
+    date_created  =models.DateTimeField(auto_now_add=True)
     
     def __str__(self):
-        return
+        return f"{self.user.username} - {self.content.title} - {self.rating}/5"
 
 class UserProfile(models.Model):
-   user =  models.CharField(max_length=255)
-   email = models.CharField(max_length=255)
-   
-   
+   user = models.OneToOneField(User, on_delete=models.CASCADE)
+   email = models.EmailField()
+     
    def __str__(self):
-       return 
+       return self.user.username
+
 
 #User model 
 class User(models.Model):
