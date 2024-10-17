@@ -182,8 +182,7 @@ class HomepageTestCase(TestCase):
     def setUp(self):
         # Initialize the test client
         self.client = Client()
-        # Replace 'homepage' with the actual name of the URL pattern for the homepage
-        self.homepage_url = reverse('homepage')  #change it to match a page from urls.py page after making a page
+        self.homepage_url = reverse('blog')  #change it to match a page from urls.py page after making a page
 
         # Set up sample data for movies
         self.movie = Content.objects.create(
