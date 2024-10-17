@@ -10,7 +10,7 @@ git push origin main
 #edited by spandana: User, SignIn, SignUp testcases added and pushed
 
 # tests.py
-from django.test import TestCase
+from django.test import TestCase, reverse
 from .models import Content, Genre, Language, Review, User, SignIn, SignUp
 from django.contrib.auth.models import User
 
@@ -160,3 +160,72 @@ class SearchTestCase(TestCase):
         results = Content.objects.filter(genres=self.drama_genre, language=self.spanish_language)
         self.assertTrue(results.exists())
         self.assertEqual(results.first().title, "La Casa de Papel")
+    def setUp(self):
+        # Initialize the test client
+        self.client = Client()
+        # Replace 'homepage' with the actual name of the URL pattern for the homepage
+        self.homepage_url = reverse('homepage')  # Ensure this matches your urls.py
+
+        # Set up sample data for movies
+        self.movie = Content.objects.create(
+            title="Sample Movie",
+            content_type="Movie",
+            release_year=2021,
+            maturity_rating="PG-13",
+            duration="2h",
+            description="A sample movie for testing.",
+            director="Sample Director",
+            writers="Sample Writer",
+            stars="Sample Star",
+        )
+class HomepageTestCase(TestCase): 
+    def setUp(self):
+        # Initialize the test client
+        self.client = Client()
+        # Replace 'homepage' with the actual name of the URL pattern for the homepage
+        self.homepage_url = reverse('homepage')  #change it to match a page from urls.py page after making a page
+
+        # Set up sample data for movies
+        self.movie = Content.objects.create(
+            title="Sample Movie",
+            content_type="Movie",
+            release_year=2021,
+            maturity_rating="PG-13",
+            duration="2h",
+            description="A sample movie for testing.",
+            director="Sample Director",
+            writers="Sample Writer",
+            stars="Sample Star",
+        )
+
+    def test_homepage_loads_successfully(self):
+        """
+        Test that the homepage loads and returns a 200 status code.
+        """
+        response = self.client.get(self.homepage_url)
+        self.assertEqual(response.status_code, 200, "Homepage did not load successfully")
+
+    def test_movie_list_is_displayed(self):
+        """
+        Test that the homepage contains a list of movies with ratings.
+        """
+        response = self.client.get(self.homepage_url)
+        # Check for the presence of movie title and rating overview
+        self.assertContains(response, self.movie.title)
+        self.assertContains(response, 'rating-overview')  # adjust based on actual HTML structure
+
+    def test_search_bar_is_present(self):
+        """
+        Test that the search bar is present on the homepage.
+        """
+        response = self.client.get(self.homepage_url)
+        # Check for search bar input (assuming 'search' is the name of the input field)
+        self.assertContains(response, '<input type="text" name="search"', html=True)
+
+    def test_hamburger_button_is_present(self):
+        """
+        Test that the hamburger menu button is present on the homepage.
+        """
+        response = self.client.get(self.homepage_url)
+        # Check for hamburger button (replace 'hamburger-button' with the actual HTML ID/class)
+        self.assertContains(response, 'class="hamburger-button"', html=True)  # Adjust based on actual HTML ID/class
