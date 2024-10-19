@@ -33,6 +33,6 @@ def add(request):
     #redirect to blog page once fruit is added 
     return redirect("/blog")
 """
-def home(request):
+def myfirstproj(request):
     return HttpResponse('Hello  World!')
    # return render(request, 'home/main.html')
