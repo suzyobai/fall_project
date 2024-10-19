@@ -86,5 +86,5 @@ class SignIn(models.Model):
     date_signed_in = models.DateTimeField(auto_now_add=True)     
 
     def __str__(self):
-        return f"SignIn for {self.user_id.email} on {self.date_signed_in}
+        return f"SignIn for {self.user_id.email} on {self.date_signed_in}"
 

@@ -1,9 +1,9 @@
 from django.shortcuts import render, redirect
+from django.http import HttpResponse
 import pyrebase
 from collections import OrderedDict #ordered dictionary to maintain order of data inputed into the databse
-from django.http import HttpResponse
 
-'''
+"""
 #firebase config for the project
 config = {
   "apiKey": "AIzaSyBIHJD2lpVnA2PCrMsRVQyXgrgs6Znd450",
@@ -32,6 +32,7 @@ def add(request):
         result = db.child("dball").child("fruitsall").push({"name" : fruits}) 
     #redirect to blog page once fruit is added 
     return redirect("/blog")
-'''
+"""
 def home(request):
-    return render(request, 'home/main.html')
+    return HttpResponse('Hello  World!')
+   # return render(request, 'home/main.html')
