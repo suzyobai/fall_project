@@ -8,14 +8,15 @@ Django project creation guide
 7. python manage.py runserver (starting djangos development server)
 8. once hitting these commands the link the project will be run on is: http://127.0.0.1:8000/
 
-Acessing an existing project such as myfirstproject
+Acessing an existing project virual space such as myfirstproject
 1. cd test
-2. .\env_site\Scripts\activate.ps1
-3. cd myfirstproj
-4. python manage.py runserver
+2. .\env_site\Scripts\activate
 
 Exiting a django project
 1. ctrl + C
 2. exit
 
+Running a existing project
+1. cd test
+2. python manage.py runserver
 
