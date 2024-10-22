@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-import pyrebase
+#import pyrebase
 from collections import OrderedDict #ordered dictionary to maintain order of data inputed into the databse
 
 """
