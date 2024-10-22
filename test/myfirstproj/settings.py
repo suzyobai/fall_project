@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     #apps 
     #'blog', add app like this  
     'myfirstproj', 
+    'notes',
 ]
 
 MIDDLEWARE = [
