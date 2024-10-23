@@ -14,6 +14,7 @@ class UserModelTest(TestCase):
             first_name="John",
             last_name="Doe",
             email="john@example.com",
+            username="john@example.com",
             password="supersecurepassword123",  # Password is hashed automatically
         )
 
@@ -37,7 +38,7 @@ class ReviewFeatureTest(TestCase):
     def test_review_prompt_box_appears(self):
         # Test that the review prompt box appears when accessing the review page
         self.client.login(username='testuser', password='password123')
-       # response = self.client.get(reverse('myfirstproj'))  # Use the appropriate URL name for the review page
+        response = self.client.get('/myfirstproj/')
         self.assertContains(response, 'Write your review here')
         self.assertContains(response, 'Rating')
         self.assertContains(response, self.movie.description)
@@ -45,9 +46,7 @@ class ReviewFeatureTest(TestCase):
     def test_successful_review_submission(self):
         # Test that a review is successfully saved with valid input
         self.client.login(username='testuser', password='password123')
-       # response = self.client.post(reverse('myfirstproj'), {  # Use the appropriate URL name for review submission
-        #pushing post request directly 
-        response = self.client.post(self.homepage_url, {
+        response = self.client.post('/myfirstproj/', {
             'content': 'Amazing movie!',
             'rating': 5
         })
@@ -55,11 +54,24 @@ class ReviewFeatureTest(TestCase):
         self.assertTrue(Review.objects.filter(movie=self.movie, user=self.user).exists())
 
     def test_view_reviews_on_movie_page(self):
-        # Test that reviews are displayed on the movie page
-        review = Review.objects.create(movie=self.movie, user=self.user, content='Amazing!', rating=5)
-        response = self.client.get(self.homepage_url)  # Use the appropriate URL name for the movie detail
-        self.assertContains(response, review.content)
-        self.assertContains(response, f"{review.rating} stars")
+    # Test that reviews are displayed on the movie page
+        review_content = Content.objects.create(
+            title='Review of Amazing Movie',
+            description='Amazing movie with great storytelling!',
+            release_year=2023  # Use any valid release year
+        )
+        
+        review = Review.objects.create(
+            #movie=self.movie,           # Assign the Content instance for the movie
+            content=self.movie,
+            user=self.user,            # Assign the User instance
+            rating=5,                  # Assign the rating
+            review_description=review_content      # Assign the Content instance to content field
+        )
+        
+        response = self.client.get('/myfirstproj/')  # Corrected typo from '/myirstproj/'
+        self.assertContains(response, review.content.description)  # Check if review content is in the response
+        self.assertContains(response, f"{review.rating} stars")  # Check for the rating display
 
 # Search test cases
 class SearchTestCase(TestCase):
