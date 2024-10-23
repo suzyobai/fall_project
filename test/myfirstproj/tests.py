@@ -37,7 +37,7 @@ class ReviewFeatureTest(TestCase):
     def test_review_prompt_box_appears(self):
         # Test that the review prompt box appears when accessing the review page
         self.client.login(username='testuser', password='password123')
-        response = self.client.get(reverse('myfirstproj'))  # Use the appropriate URL name for the review page
+       # response = self.client.get(reverse('myfirstproj'))  # Use the appropriate URL name for the review page
         self.assertContains(response, 'Write your review here')
         self.assertContains(response, 'Rating')
         self.assertContains(response, self.movie.description)
@@ -45,7 +45,9 @@ class ReviewFeatureTest(TestCase):
     def test_successful_review_submission(self):
         # Test that a review is successfully saved with valid input
         self.client.login(username='testuser', password='password123')
-        response = self.client.post(reverse('myfirstproj'), {  # Use the appropriate URL name for review submission
+       # response = self.client.post(reverse('myfirstproj'), {  # Use the appropriate URL name for review submission
+        #pushing post request directly 
+        response = self.client.post(self.homepage_url, {
             'content': 'Amazing movie!',
             'rating': 5
         })
@@ -55,7 +57,7 @@ class ReviewFeatureTest(TestCase):
     def test_view_reviews_on_movie_page(self):
         # Test that reviews are displayed on the movie page
         review = Review.objects.create(movie=self.movie, user=self.user, content='Amazing!', rating=5)
-        response = self.client.get(reverse('myfirstproj'))  # Use the appropriate URL name for the movie detail
+        response = self.client.get(self.homepage_url)  # Use the appropriate URL name for the movie detail
         self.assertContains(response, review.content)
         self.assertContains(response, f"{review.rating} stars")
 
@@ -100,7 +102,7 @@ class HomepageTestCase(TestCase):
     def setUp(self):
         # Initialize the test client
         self.client = Client()
-        self.homepage_url = reverse('myfirstproj')  # Use the URL name for your homepage
+        self.homepage_url = '/myfirstproj/'  # Directly use the URL path
 
         # Set up sample data for movies
         self.movie = Content.objects.create(
