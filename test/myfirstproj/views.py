@@ -49,9 +49,6 @@ def myfirstproj(request):
         return HttpResponse("Write your review here", status=200) 
     #200 means worked sucessfully, 302 is page gets redirected, 400 is when invalid data/inputs r given        
 """
-from django.http import HttpResponse
-from .models import Review, Content
-from django.contrib.auth.models import User
 
 def myfirstproj(request):
     if request.method == "POST":
