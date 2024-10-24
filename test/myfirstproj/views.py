@@ -35,15 +35,20 @@ def add(request):
     return redirect("/blog")
 """
 def myfirstproj(request):
+
     if request.method == "POST": #posting data into db
         if request.POST['content'] and request.POST['rating']:
             content=request.POST['content']
-            #create a new review usinmg Review.objects.create()
+            #create a new review using Review.objects.create()
             #add to db with the save method
             return HttpResponse('Review Successfully added to database', status=200) #added a status code to pass testcase 
         else:
             return HttpResponse('You did not enter a valid review or rating, please try again',status=400)
-        
+    #make more elif blocks but to handle for now using else
+    else:
+        return HttpResponse("Write your review here", status=200) 
+    #200 means worked sucessfully, 302 is page gets redirected, 400 is when invalid data/inputs r given        
+
 
 def home(request):
     reviews= Review.objects.all()
