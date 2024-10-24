@@ -39,8 +39,8 @@ class ReviewFeatureTest(TestCase):
         # Test that the review prompt box appears when accessing the review page
         self.client.login(username='testuser', password='password123')
         response = self.client.get('/myfirstproj/')
-        self.assertContains(response, 'Write your review here') #testing
-        #self.assertContains(response, 'Rating')
+        self.assertContains(response, 'Write your review here') 
+        self.assertContains(response, 'Rating')
         self.assertContains(response, self.movie.description)
 
     def test_successful_review_submission(self): #error here ValueError: Field 'id' expected a number but got 'Amazing movie!'.
