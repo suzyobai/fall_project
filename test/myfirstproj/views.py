@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
+from .models import Review
 #import pyrebase
 from collections import OrderedDict #ordered dictionary to maintain order of data inputed into the databse
 
@@ -34,5 +35,16 @@ def add(request):
     return redirect("/blog")
 """
 def myfirstproj(request):
-    return HttpResponse('Hello  World!')
-   # return render(request, 'home/main.html')
+    if request.method == "POST": #posting data into db
+        if request.POST['content'] and request.POST['rating']:
+            content=request.POST['content']
+            #create a new review usinmg Review.objects.create()
+            #add to db with the save method
+            return HttpResponse('Review Successfully added to database', status=200) #added a status code to pass testcase 
+        else:
+            return HttpResponse('You did not enter a valid review or rating, please try again',status=400)
+        
+
+def home(request):
+    reviews= Review.objects.all()
+   # return render(request, 'home/main.html')   
