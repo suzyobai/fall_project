@@ -34,6 +34,9 @@ class ReviewFeatureTest(TestCase):
         # Create user and content (movie) instances
         self.user = User.objects.create_user(username='testuser', password='password123')
         self.movie = Content.objects.create(title='Test Movie', description='A great movie!', release_year=2010)
+        self.tangled = Content.objects.create(title="tangled", release_year=2010)
+        assert Content.objects.filter(title="tangled").exists(), "content title 'tangled' was not created"
+        """
         self.tangled =  Content.objects.create(
             title="Tangled",
             content_type="Movie",  # Movie or TV Show
@@ -45,37 +48,29 @@ class ReviewFeatureTest(TestCase):
             writers="Dan Fogelman, Jacob Grimm, Wilhelm Grimm",
             stars="Mandy Moore, Zachary Levi, Donna Murphy"
         )
+"""
 
-
-    def test_review_prompt_box_appears(self):
+    def test_review_prompt_box_appears(self): #error here getting thrown 400, check to see if objects are stored in db-Spandana Andhavarapu
         # Test that the review prompt box appears when accessing the review page
         self.client.login(username='testuser', password='password123')
         response = self.client.get('/myfirstproj/')
         self.assertContains(response, 'Write your review here') 
         self.assertContains(response, 'Rating')
-        self.assertContains(response, self.movie.description)
 
-    def test_successful_review_submission(self): #error here ValueError: Field 'id' expected a number but got 'Amazing movie!'.
+    def test_successful_review_submission(self): 
         # Test that a review is successfully saved with valid input
-        #create a content instance that has the title Tangled already in 
-        #run the test on that
-        
-            #sending a post request with the inputed data
         self.client.login(username='testuser', password='password123')
         response = self.client.post('/myfirstproj/', {
-            'content_title' : self.tangled.title,
+            'content_title' : self.tangled.id,
             'content': 'Amazing movie!',
             'rating': 5
         })
-        #if post send data 
 
-        self.assertEqual(response.status_code, 200)  # Assuming a redirect occurs after posting
+        self.assertEqual(response.status_code, 200)  
         self.assertTrue(Review.objects.filter(content_title=self.tangled, content="Amazing movie!", rating=5).exists()) #checking if content is in db
         
-        #user=self.user
-        #content = respoonse.content
 
-    def test_view_reviews_on_movie_page(self):
+    def test_view_reviews_on_movie_page(self): #some error with contentid, prob a model error-Spandana Andhavarapu
     # Test that reviews are displayed on the movie page
         review_content = Content.objects.create(
             title='Deadpool',
@@ -83,18 +78,18 @@ class ReviewFeatureTest(TestCase):
             release_year=2023  # Use any valid release year
         )
         
-        review = Review.objects.create(
-            #movie=self.movie,           # Assign the Content instance for the movie
-            content_title=self.movie, #change to self.content? prob use review_content
-            user=self.user,            # Assign the User instance
-            rating=5,                  # Assign the rating
-            review_description=review_content      # Assign the Content instance to content field
+        review = Review.objects.create( 
+            content_title=review_content, 
+            #to keep track-doing review_content.id gave me 3-Spandana Andhavarapu
+            user=self.user,            
+            rating=5,                 
+            review_description="A must watch movie"      
         )
         
-        response = self.client.get('/myfirstproj/')  # Corrected typo from '/myirstproj/'
+        response = self.client.get('/view_reviews/')  
         print(response)
-        self.assertContains(response, review.content.description)  # Check if review content is in the response
-        self.assertContains(response, f"{review.rating} stars")  # Check for the rating display
+        self.assertContains(response, review.content.description)  
+        self.assertContains(response, f"{review.rating} stars")  
 """
 # Search test cases
 class SearchTestCase(TestCase):

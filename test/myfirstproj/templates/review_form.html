@@ -1,0 +1,24 @@
+<!-- review_form.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Submit a Review</title>
+</head>
+<body>
+    <h1>Write Your Review</h1>
+    <form action="{% url 'myfirstproj' %}" method="post">
+        {% csrf_token %}
+        <label for="content_title">Content Title:</label>
+        <input type="text" name="content_title" id="content_title" required><br>
+
+        <label for="content">Write your review here:</label>
+        <textarea name="content" id="content" required></textarea><br>
+
+        <label for="rating">Rating (1-5):</label>  <!-- "Rating" label -->
+        <input type="number" name="rating" id="rating" min="1" max="5" required><br>
+
+        <button type="submit">Submit Review</button>
+    </form>
+</body>
+</html>
