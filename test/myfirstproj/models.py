@@ -39,6 +39,7 @@ class Content(models.Model):
         return f"{self.title} ({self.release_year}) - {self.content_type}" 
 
 class Review(models.Model):
+    content_title = models.ForeignKey(Content, on_delete=models.CASCADE, related_name='review_titles') #title foreign key to be related to 
     content = models.ForeignKey(Content, on_delete=models.CASCADE, related_name='reviews') # Updated Comments from James D. Create a content instance, user instance
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='reviews') # rating and review Check models for this Use Django Model Create on google
     rating = models.PositiveIntegerField()

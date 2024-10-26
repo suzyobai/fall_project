@@ -34,6 +34,18 @@ class ReviewFeatureTest(TestCase):
         # Create user and content (movie) instances
         self.user = User.objects.create_user(username='testuser', password='password123')
         self.movie = Content.objects.create(title='Test Movie', description='A great movie!', release_year=2010)
+        self.tangled =  Content.objects.create(
+            title="Tangled",
+            content_type="Movie",  # Movie or TV Show
+            release_year=2010,
+            maturity_rating="PG",  # Example: "PG"
+            duration="1h 40min",  # Example format
+            description="The magically long-haired Rapunzel has spent her entire life in a tower, but now that a runaway thief has stumbled upon her, she is about to discover the world for the first time, and who she really is.",
+            director="Nathan Greno, Byron Howard",
+            writers="Dan Fogelman, Jacob Grimm, Wilhelm Grimm",
+            stars="Mandy Moore, Zachary Levi, Donna Murphy"
+        )
+
 
     def test_review_prompt_box_appears(self):
         # Test that the review prompt box appears when accessing the review page
@@ -45,27 +57,35 @@ class ReviewFeatureTest(TestCase):
 
     def test_successful_review_submission(self): #error here ValueError: Field 'id' expected a number but got 'Amazing movie!'.
         # Test that a review is successfully saved with valid input
+        #create a content instance that has the title Tangled already in 
+        #run the test on that
+        
+            #sending a post request with the inputed data
         self.client.login(username='testuser', password='password123')
         response = self.client.post('/myfirstproj/', {
+            'content_title' : self.tangled.title,
             'content': 'Amazing movie!',
             'rating': 5
         })
+        #if post send data 
+
         self.assertEqual(response.status_code, 200)  # Assuming a redirect occurs after posting
-        self.assertTrue(Review.objects.filter(content="Amazing movie!", rating=5).exists()) #checking if content is in db
+        self.assertTrue(Review.objects.filter(content_title=self.tangled, content="Amazing movie!", rating=5).exists()) #checking if content is in db
+        
         #user=self.user
         #content = respoonse.content
 
     def test_view_reviews_on_movie_page(self):
     # Test that reviews are displayed on the movie page
         review_content = Content.objects.create(
-            title='Review of Amazing Movie',
+            title='Deadpool',
             description='Amazing movie with great storytelling!',
             release_year=2023  # Use any valid release year
         )
         
         review = Review.objects.create(
             #movie=self.movie,           # Assign the Content instance for the movie
-            content=self.movie, #change to self.content? prob use review_content
+            content_title=self.movie, #change to self.content? prob use review_content
             user=self.user,            # Assign the User instance
             rating=5,                  # Assign the rating
             review_description=review_content      # Assign the Content instance to content field

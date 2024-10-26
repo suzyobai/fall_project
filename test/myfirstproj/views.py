@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Review
+from .models import Review, Content
 #import pyrebase
 from collections import OrderedDict #ordered dictionary to maintain order of data inputed into the databse
 
@@ -52,25 +52,26 @@ def myfirstproj(request):
 
 def myfirstproj(request):
     if request.method == "POST":
-        if 'content' in request.POST and 'rating' in request.POST:
+        if 'content_title' in request.POST and 'content' in request.POST and 'rating' in request.POST:
+            content_title_data = request.POST['content_title']
             content_data = request.POST['content']
             rating_data = request.POST['rating']
 
-            try:
-                rating_value = int(rating_data)
-                if 1 <= rating_value <= 5:
+            
+            rating_value = int(rating_data)
+            if 1 <= rating_value <= 5:
                     # Assuming you're fetching the content by title
-                    content_instance = Content.objects.get(title=content_data)
-                    Review.objects.create(
-                        content=content_instance,
-                        user=request.user,
-                        rating=rating_value
-                    )
-                    return HttpResponse('Review Successfully added to database', status=200)
-                else:
-                    return HttpResponse('Invalid rating value. Rating must be between 1 and 5.', status=400)
-            except (ValueError, Content.DoesNotExist):
-                return HttpResponse('Invalid data. Content not found or rating is not a valid number.', status=400)
+                content_instance = Content.objects.get(title=content_data)
+                Review.objects.create(
+                    title=content_instance,
+                    user=request.user,
+                    rating=rating_value
+                )
+                return HttpResponse('Review Successfully added to database', status=200)
+            else:
+                return HttpResponse('Invalid rating value. Rating must be between 1 and 5.', status=400)
+           # except (ValueError, Content.DoesNotExist):
+           #     return HttpResponse('Invalid data. Content not found or rating is not a valid number.', status=400)
         else:
             return HttpResponse('You did not enter a valid review or rating, please try again', status=400)
     
