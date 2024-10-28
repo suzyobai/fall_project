@@ -79,8 +79,9 @@ class ReviewFeatureTest(TestCase):
         )
         
         review = Review.objects.create( 
-            content_title=review_content, 
+            content=review_content, 
             #to keep track-doing review_content.id gave me 3-Spandana Andhavarapu
+            #Updated Line 82 code rewriting content_title to content=review
             user=self.user,            
             rating=5,                 
             review_description="A must watch movie"      
