@@ -39,7 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #apps 
     #'blog', add app like this  
-    'myfirstproj', 
+    #'myfirstproj', 
     'notes',
 ]
 
@@ -53,7 +53,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'myfirstproj.urls'
+ROOT_URLCONF = 'notes.urls'
 
 TEMPLATES = [
     {
