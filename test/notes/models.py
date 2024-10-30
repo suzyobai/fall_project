@@ -35,8 +35,7 @@ class Content(models.Model):
         return f"{self.title} ({self.release_year}) - {self.content_type}"
 
 class Review(models.Model):
-    #content_title = models.ForeignKey(Content, on_delete=models.CASCADE, related_name='review_titles') #title foreign key to be related to 
-    content_title = models.ForeignKey(Content, on_delete=models.CASCADE, related_name='reviews')
+    content_title = models.ForeignKey(Content, on_delete=models.CASCADE) #updated foreign key 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='app_reviews')  # Adjusted related_name
     rating = models.PositiveIntegerField()
     review_description = models.TextField()
