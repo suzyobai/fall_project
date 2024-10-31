@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     #apps 
     #'blog', add app like this  
     #'myfirstproj', 
-    'notes',
+    #'notes',
+    'home',
 ]
 
 MIDDLEWARE = [
@@ -53,7 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'notes.urls'
+ROOT_URLCONF = 'home.urls'
 
 TEMPLATES = [
     {

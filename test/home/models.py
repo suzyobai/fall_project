@@ -1,4 +1,7 @@
 from django.db import models
+
+# Create your models here.
+from django.db import models
 from django.contrib.auth.models import User
 
 class Genre(models.Model):
@@ -35,10 +38,10 @@ class Content(models.Model):
         return f"{self.title} ({self.release_year}) - {self.content_type}"
 
 class Review(models.Model):
-    content_title = models.ForeignKey(Content, on_delete=models.CASCADE) #updated foreign key 
-    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='app_reviews')  # Adjusted related_name
     rating = models.PositiveIntegerField()
     review_description = models.TextField()
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='app_reviews')  # Adjusted related_name
+    content_title = models.ForeignKey(Content, on_delete=models.CASCADE) #updated foreign key 
     date_created = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

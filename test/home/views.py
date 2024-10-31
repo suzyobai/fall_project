@@ -1,18 +1,12 @@
 from django.shortcuts import render
 
-# Create your views here.
-from django.shortcuts import render, redirect
-from django.http import HttpResponse
-from .models import Review, Content
-#import pyrebase
 from collections import OrderedDict #ordered dictionary to maintain order of data inputed into the databse
-# views.py
 
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Content, Review
 
-def notes(request):
+def home(request):
     if request.method == "POST":
         if 'content_title' in request.POST and 'content' in request.POST and 'rating' in request.POST:
             content_title_data = request.POST['content_title']
@@ -45,6 +39,6 @@ def view_reviews(request):
     reviews = Review.objects.all()
     #print(f"Number of reviews: {reviews.count()}")
     return render(request, 'view_reviews.html', {'reviews': reviews})
-
+"""
 def home(request): #placeholder for homepage to display all the movie pngs and stars
-    return HttpResponse('Welcome', status=200)
+    return HttpResponse('Welcome', status=200)"""

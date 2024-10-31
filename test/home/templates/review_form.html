@@ -7,7 +7,7 @@
 </head>
 <body>
     <h1>Write Your Review</h1>
-    <form action="{% url 'notes' %}" method="post">
+    <form action="{% url 'home' %}" method="post">
         {% csrf_token %}
         <label for="content_title">Content Title:</label>
         <input type="text" name="content_title" id="content_title" required><br>
