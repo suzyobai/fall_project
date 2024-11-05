@@ -55,6 +55,7 @@ def myfirstproj(request):
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Content, Review
+from django.contrib.auth.views import LoginView 
 
 def myfirstproj(request):
     if request.method == "POST":
@@ -91,3 +92,6 @@ def view_reviews(request):
 
 def home(request): #placeholder for homepage to display all the movie pngs and stars
     return HttpResponse('Welcome', status=200)
+
+class LoginInterfaceView(LoginView):
+    template_name = 'home/login.html'

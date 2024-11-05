@@ -23,7 +23,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('myfirstproj/', views.myfirstproj, name='myfirstproj'),
     path('view_reviews/', views.view_reviews, name='view_reviews'), #after pushing data for reviews should be able to see them here
-    path('/',views.home) #added for homepage
+    path('/',views.home), #added for homepage
+    path('login/', views.LoginInterfaceView.as_view(), name='login'), #added for login
 
     #path('blog/', include("blog.urls")), 
 ]
