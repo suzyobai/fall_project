@@ -10,7 +10,13 @@
     <form action="{% url 'home' %}" method="post">
         {% csrf_token %}
         <label for="content_title">Content Title:</label>
-        <input type="text" name="content_title" id="content_title" required><br>
+        <select name="content_title" id="content_title" required>
+            <option value="" disabled selected>Select a title</option>
+            {% for title in content_titles %}
+                <option value="{{ title }}">{{ title }}</option>
+            {% endfor %}
+        </select>
+        <br>
 
         <label for="review_description">Write your review here:</label>
         <textarea name="review_description" id="review_description" required></textarea><br>

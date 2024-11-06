@@ -10,8 +10,8 @@
     <form action="{% url 'myfirstproj' %}" method="post">
         {% csrf_token %}
         <label for="content_title">Content Title:</label>
-        <input type="text" name="content_title" id="content_title" required><br>
-
+        <input type="text" name="content_title" id="content_title" required><br> 
+    
         <label for="content">Write your review here:</label>
         <textarea name="content" id="content" required></textarea><br>
 

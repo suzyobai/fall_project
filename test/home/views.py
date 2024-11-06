@@ -37,14 +37,20 @@ def home(request):
         else:
             return HttpResponse('You did not enter a valid review or rating. Please try again.', status=400)
 
-    elif request.method == "GET":
-        return render(request, 'review_form.html')
+    elif request.method == "GET":        
+        content_titles = Content.objects.values_list('title', flat=True)
+        print("Content Titles:", content_titles)#
+        return render(request, 'review_form.html', {'content_titles': content_titles})
 
-#view_reviews http responses defined to view all reviews on a page
+#testing to view the reviews submitted in page above^
 def view_reviews(request):
     reviews = Review.objects.all()
     #print(f"Number of reviews: {reviews.count()}")
     return render(request, 'view_reviews.html', {'reviews': reviews})
+
+#def login
+
+#def logout
 
 #def home(request): #placeholder for homepage to display all the movie pngs and stars
  #   return HttpResponse('Welcome', status=200)
