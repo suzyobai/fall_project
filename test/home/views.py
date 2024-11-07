@@ -36,11 +36,27 @@ def home(request):
                 return HttpResponse('Content not found.', status=400)
         else:
             return HttpResponse('You did not enter a valid review or rating. Please try again.', status=400)
-
-    elif request.method == "GET":        
+    elif request.method == "GET":
+        # Fetch all Content titles for the dropdown
         content_titles = Content.objects.values_list('title', flat=True)
-        print("Content Titles:", content_titles)#
-        return render(request, 'review_form.html', {'content_titles': content_titles})
+
+        # Get selected content_title from query parameters, if available
+        selected_content_title = request.GET.get('content_title')
+        
+        # Fetch reviews associated with the selected content title, if provided
+        reviews = []
+        if selected_content_title:
+            try:
+                content_instance = Content.objects.get(title=selected_content_title)
+                reviews = Review.objects.filter(content_title=content_instance)
+            except Content.DoesNotExist:
+                reviews = []  # No reviews if the content does not exist
+
+        return render(request, 'review_form.html', {
+            'content_titles': content_titles,
+            'reviews': reviews,
+            'selected_content_title': selected_content_title
+        })
 
 #testing to view the reviews submitted in page above^
 def view_reviews(request):

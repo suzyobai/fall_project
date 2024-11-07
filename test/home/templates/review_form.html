@@ -7,8 +7,22 @@
 </head>
 <body>
     <h1>Write Your Review</h1>
+    
+    <!-- Dropdown for selecting content title to view existing reviews -->
+    <form method="get" action="{% url 'home' %}">
+        <label for="content_title_select">Select Content to View Reviews:</label>
+        <select name="content_title" id="content_title_select" onchange="this.form.submit()">
+            <option value="" disabled {% if not selected_content_title %}selected{% endif %}>Select a title</option>
+            {% for title in content_titles %}
+                <option value="{{ title }}" {% if title == selected_content_title %}selected{% endif %}>{{ title }}</option>
+            {% endfor %}
+        </select>
+    </form>
+
+    <!-- Form for submitting a new review -->
     <form action="{% url 'home' %}" method="post">
         {% csrf_token %}
+
         <label for="content_title">Content Title:</label>
         <select name="content_title" id="content_title" required>
             <option value="" disabled selected>Select a title</option>
@@ -21,10 +35,25 @@
         <label for="review_description">Write your review here:</label>
         <textarea name="review_description" id="review_description" required></textarea><br>
 
-        <label for="rating">Rating (1-5):</label>  <!-- "Rating" label -->
+        <label for="rating">Rating (1-5):</label>
         <input type="number" name="rating" id="rating" min="1" max="5" required><br>
 
         <button type="submit">Submit Review</button>
     </form>
+
+    <!-- Display reviews for the selected content title -->
+    {% if reviews %}
+        <h2>Reviews for {{ selected_content_title }}</h2>
+        <ul>
+            {% for review in reviews %}
+                <li>
+                    <strong>Rating:</strong> {{ review.rating }}<br>
+                    <strong>Review:</strong> {{ review.review_description }}
+                </li>
+            {% endfor %}
+        </ul>
+    {% elif selected_content_title %}
+        <p>No reviews found for {{ selected_content_title }}</p>
+    {% endif %}
 </body>
 </html>
