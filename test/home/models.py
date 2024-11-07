@@ -34,6 +34,8 @@ class Content(models.Model):
     genres = models.ManyToManyField(Genre, related_name='content')
     languages = models.ManyToManyField(Language, related_name='content')  # supports multiple languages
 
+    image = models.ImageField(upload_to='content_images/', blank=True, null=True)
+
     def __str__(self):
         return f"{self.title} ({self.release_year}) - {self.content_type}"
 
