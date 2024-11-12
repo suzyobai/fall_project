@@ -5,7 +5,7 @@ from collections import OrderedDict #ordered dictionary to maintain order of dat
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Content, Review
-
+from django.contrib.auth.views import LoginView, LogoutView
 #home page http responses defined to push data and see if the data has been pushed  
 def home(request):
     if request.method == "POST":
@@ -68,8 +68,10 @@ def review_form(request):
     return render()
 
 #def login
-
+class LoginInterfaceView(LoginView):
+    template_name = 'home/login.html'
 #def logout
-
+class LogoutInterfaceView(LogoutView):
+    template_name = 'home/logout.html'
 #def home(request): #placeholder for homepage to display all the movie pngs and stars
  #   return HttpResponse('Welcome', status=200)
