@@ -64,6 +64,9 @@ def view_reviews(request):
     #print(f"Number of reviews: {reviews.count()}")
     return render(request, 'view_reviews.html', {'reviews': reviews})
 
+def review_form(request):
+    return render()
+
 #def login
 
 #def logout
