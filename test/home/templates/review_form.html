@@ -8,7 +8,7 @@
     <h1>Write Your Review</h1>
     
     <!-- Dropdown for selecting content title to view existing reviews -->
-    <form method="get" action="{% url 'home' %}">
+    <form method="get" action="{% url 'review_form' %}">
         <label for="content_title_select">Select Content to View Reviews:</label>
         <select name="content_title" id="content_title_select" onchange="this.form.submit()">
             <option value="" disabled {% if not selected_content_title %}selected{% endif %}>Select a title</option>
@@ -19,7 +19,7 @@
     </form>
 
     <!-- Form for submitting a new review -->
-    <form action="{% url 'home' %}" method="post">
+    <form action="{% url 'review_form' %}" method="post">
         {% csrf_token %}
 
         <label for="content_title">Content Title:</label>

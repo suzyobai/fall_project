@@ -1,15 +1,40 @@
 <!DOCTYPE html>
-<html lang ="en">
-    <meta name ="viewport" content="width=device-width,
-    initial-scale=1.0">
-    <title>Document</title>
+<html lang="en">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie List</title>
+    <style>
+        .movie-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .movie-item {
+            width: 200px;
+            text-align: center;
+        }
+        .movie-item img {
+            width: 100%;
+            height: auto;
+        }
+    </style>
 </head>
 <body>
-    <form action ="/admin" method="post">
-        {% csrf_token %}
-        <input type = "text" name="fruits">
-        <button type="subit">add</button>
-    </form>
+
+    <h1>Movie Titles and Posters</h1>
+
+    <div class="movie-container">
+        {% for movie in movies %}
+            <div class="movie-item">
+                {% if movie.image %}
+                    <img src="{{ movie.image.url }}" alt="{{ movie.title }}">
+                {% endif %}
+                <h3>
+                    <a href="{% url 'review_form' movie.id %}">{{ movie.title }}</a>
+                </h3>
+            </div>
+        {% endfor %}
+    </div>
 
 </body>
 </html>
