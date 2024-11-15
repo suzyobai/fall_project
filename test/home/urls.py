@@ -7,15 +7,13 @@ from home import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', views.main, name='main'),  # define the home page to view all movies on this site
     path('review/<int:movie_id>/', views.review_form, name='review_form'),
-   #path('', views.main, name='main'),  # define the home page to view all movies on this site
     path('review_form', views.review_form, name='review_form'),
-    path('home/', views.home, name='home'),
     path('view_reviews/', views.view_reviews, name='view_reviews'),  # Pushes the data for reviews 
     path('login/', views.login, name='login'),
     path('logout/', views.logout, name='logout'),
     path('sign-up/', views.signup, name='sign-up'),
-    # path('blog/', include("blog.urls")),  # Uncomment if adding blog app
 ]
 
     #path('/',views.home) #added for homepage

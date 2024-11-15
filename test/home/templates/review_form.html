@@ -9,9 +9,9 @@
     <ul>
         {% for contents in content %}
                 <li>
-                    <strong>Title:</strong> {{ content.title }}<br>
-                    <strong>Content:</strong> {{ content.content_type }}<br>
-                    <strong>Description:</strong> {{ content.description }} stars
+                    <strong>Title:</strong> {{ content_instance.title }}<br>
+                    <strong>Content:</strong> {{ content_instance.content_type }}<br>
+                    <strong>Description:</strong> {{ content_instance.description }} stars
                 </li>
             {% empty %}
                 <li>No content avalible.</li>

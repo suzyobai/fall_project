@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 
 from collections import OrderedDict #ordered dictionary to maintain order of data inputed into the databse
 
@@ -7,10 +7,12 @@ from django.http import HttpResponse
 from .models import Content, Review
 from django.contrib.auth.views import LoginView, LogoutView
 #home page http responses defined to push data and see if the data has been pushed  
-def home(request):
+def review_form(request, movie_id=None):
+    # Fetch the movie (Content) instance by its ID
+    content_instance = get_object_or_404(Content, id=movie_id)
+    
     if request.method == "POST":
-        if 'content_title' in request.POST and 'review_description' in request.POST and 'rating' in request.POST:
-            content_title_data = request.POST['content_title']
+        if 'review_description' in request.POST and 'rating' in request.POST:
             review_description_data = request.POST['review_description']
             rating_data = request.POST['rating']
             
@@ -21,60 +23,39 @@ def home(request):
             except ValueError:
                 return HttpResponse('Rating must be a number.', status=400)
 
-            try:
-                content_instance = Content.objects.get(title=content_title_data)
+            # Create the review associated with the selected Content
+            Review.objects.create(
+                content_title=content_instance,  
+                user=request.user,       
+                rating=rating_value,
+                review_description=review_description_data
+            )
+            
+            return HttpResponse('Review successfully added to database.', status=200)
 
-                Review.objects.create(
-                    content_title=content_instance,  
-                    user=request.user,       
-                    rating=rating_value,
-                    review_description=review_description_data
-                )
-                
-                return HttpResponse('Review successfully added to database.', status=200)
-            except Content.DoesNotExist:
-                return HttpResponse('Content not found.', status=400)
         else:
             return HttpResponse('You did not enter a valid review or rating. Please try again.', status=400)
+
     elif request.method == "GET":
-
-        #display all content info
-        contents = Content.objects.all()
-
-
         # Fetch all Content titles for the dropdown (if needed elsewhere)
         content_titles = Content.objects.values_list('title', flat=True)
 
-        # Get selected content_title from query parameters, if available
-        selected_content_title = request.GET.get('content_title')
-        
-        # Fetch reviews associated with the selected content title, if provided
-        reviews = []
-        if selected_content_title:
-            try:
-                content_instance = Content.objects.get(title=selected_content_title)
-                reviews = Review.objects.filter(content_title=content_instance)
-            except Content.DoesNotExist:
-                reviews = []  # No reviews if the content does not exist
+        # Fetch reviews associated with the selected content (movie)
+        reviews = Review.objects.filter(content_title=content_instance)
 
-        return render(
-            request,
-            'review_form.html',
-            {
-                'contents': contents,  # Pass all Content objects for attribute access
-                'content_instance': content_instance,  # The selected Content object
-                'content_titles': content_titles,  # Optional, for a dropdown if needed
-                'reviews': reviews,  # Reviews for the selected content
-            }
-        )
-#testing to view the reviews submitted in page above^
+        return render(request, 'review_form.html', {
+            'content_titles': content_titles,  # Optional, for a dropdown if needed
+            'reviews': reviews,
+            'selected_content_title': content_instance.title,
+        })#testing to view the reviews submitted in page above^
 def view_reviews(request):
     reviews = Review.objects.all()
     #print(f"Number of reviews: {reviews.count()}")
     return render(request, 'view_reviews.html', {'reviews': reviews})
 
-def review_form(request):
-    return render()
+def main(request):
+    movies = Content.objects.all()  # Fetch all Content objects
+    return render(request, 'main.html', {'movies': movies})
 
 
 def login(request):
