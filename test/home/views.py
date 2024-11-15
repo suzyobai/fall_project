@@ -37,17 +37,27 @@ def review_form(request, movie_id=None):
             return HttpResponse('You did not enter a valid review or rating. Please try again.', status=400)
 
     elif request.method == "GET":
+
+        #display all content info
+        contents = Content.objects.all()
+
+
         # Fetch all Content titles for the dropdown (if needed elsewhere)
         content_titles = Content.objects.values_list('title', flat=True)
 
         # Fetch reviews associated with the selected content (movie)
         reviews = Review.objects.filter(content_title=content_instance)
 
-        return render(request, 'review_form.html', {
-            'content_titles': content_titles,  # Optional, for a dropdown if needed
-            'reviews': reviews,
-            'selected_content_title': content_instance.title,
-        })
+        return render(
+            request,
+            'review_form.html',
+            {
+                'contents': contents,  # Pass all Content objects for attribute access
+                'content_instance': content_instance,  # The selected Content object
+                'content_titles': content_titles,  # Optional, for a dropdown if needed
+                'reviews': reviews,  # Reviews for the selected content
+            }
+        )
 #testing to view the reviews submitted in page above^
 def view_reviews(request):
     reviews = Review.objects.all()
