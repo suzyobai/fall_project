@@ -8,13 +8,13 @@ from home import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('review/<int:movie_id>/', views.review_form, name='review_form'),
-    path('', views.main, name='main'),  # define the home page to view all movies on this site
+   #path('', views.main, name='main'),  # define the home page to view all movies on this site
     path('review_form', views.review_form, name='review_form'),
-    #path('home/', views.home, name='home'),
+    path('home/', views.home, name='home'),
     path('view_reviews/', views.view_reviews, name='view_reviews'),  # Pushes the data for reviews 
-    path('login/', views.LoginInterfaceView.as_view(), name='login'), #added for login
-    path('logout/', views.LogoutInterfaceView.as_view(), name='logout'), #added for logout
-
+    path('login/', views.login, name='login'),
+    path('logout/', views.logout, name='logout'),
+    path('sign-up/', views.signup, name='sign-up'),
     # path('blog/', include("blog.urls")),  # Uncomment if adding blog app
 ]
 
