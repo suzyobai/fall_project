@@ -1,13 +1,15 @@
-from django.shortcuts import get_object_or_404, render
-
+from django.shortcuts import get_object_or_404, redirect
 from collections import OrderedDict #ordered dictionary to maintain order of data inputed into the databse
-
 from django.shortcuts import render
 from django.http import HttpResponse
 from .models import Content, Review
 from django.contrib.auth.views import LoginView, LogoutView
 #home page http responses defined to push data and see if the data has been pushed  
 def review_form(request, movie_id=None):
+    # If no movie_id is provided, redirect to the main page or return an error
+    if not movie_id:
+        return HttpResponse('Movie ID is required to add or view a review.', status=400)
+
     # Fetch the movie (Content) instance by its ID
     content_instance = get_object_or_404(Content, id=movie_id)
     
@@ -23,7 +25,7 @@ def review_form(request, movie_id=None):
             except ValueError:
                 return HttpResponse('Rating must be a number.', status=400)
 
-            # Create the review associated with the selected Content
+            #creating review objects
             Review.objects.create(
                 content_title=content_instance,  
                 user=request.user,       
@@ -31,32 +33,27 @@ def review_form(request, movie_id=None):
                 review_description=review_description_data
             )
             
-            return HttpResponse('Review successfully added to database.', status=200)
+            return redirect('review_form', movie_id=movie_id)  # Redirect to prevent duplicate submissions
 
         else:
             return HttpResponse('You did not enter a valid review or rating. Please try again.', status=400)
 
     elif request.method == "GET":
-        # Fetch all Content titles for the dropdown (if needed elsewhere)
         content_titles = Content.objects.values_list('title', flat=True)
 
-        # Fetch reviews associated with the selected content (movie)
         reviews = Review.objects.filter(content_title=content_instance)
 
         return render(request, 'review_form.html', {
-            'content_titles': content_titles,  # Optional, for a dropdown if needed
             'reviews': reviews,
-            'selected_content_title': content_instance.title,
-        })#testing to view the reviews submitted in page above^
+            'content_instance': content_instance,
+        })
 def view_reviews(request):
     reviews = Review.objects.all()
-    #print(f"Number of reviews: {reviews.count()}")
     return render(request, 'view_reviews.html', {'reviews': reviews})
 
 def main(request):
     movies = Content.objects.all()  # Fetch all Content objects
     return render(request, 'main.html', {'movies': movies})
-
 
 def login(request):
     return render(request, 'login.html')
@@ -66,5 +63,3 @@ def logout(request):
 
 def signup(request):
     return render(request, 'signup.html')
-#def home(request): #placeholder for homepage to display all the movie pngs and stars
- #   return HttpResponse('Welcome', status=200)

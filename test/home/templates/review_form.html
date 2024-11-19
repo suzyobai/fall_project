@@ -6,40 +6,14 @@
 </head>
 <body>
     <h1>Write Your Review</h1>
-    <ul>
-        {% for contents in content %}
-                <li>
-                    <strong>Title:</strong> {{ content_instance.title }}<br>
-                    <strong>Content:</strong> {{ content_instance.content_type }}<br>
-                    <strong>Description:</strong> {{ content_instance.description }} stars
-                </li>
-            {% empty %}
-                <li>No content avalible.</li>
-            {% endfor %}
-    </ul>
-    <!-- Dropdown for selecting content title to view existing reviews -->
-    <form method="get" action="{% url 'review_form' %}">
-        <label for="content_title_select">Select Content to View Reviews:</label>
-        <select name="content_title" id="content_title_select" onchange="this.form.submit()">
-            <option value="" disabled {% if not selected_content_title %}selected{% endif %}>Select a title</option>
-            {% for title in content_titles %}
-                <option value="{{ title }}" {% if title == selected_content_title %}selected{% endif %}>{{ title }}</option>
-            {% endfor %}
-        </select>
-    </form>
-
-    <!-- Form for submitting a new review -->
-    <form action="{% url 'review_form' %}" method="post">
+        <ul>
+            <strong>Title:</strong> {{ content_instance.title }}<br>
+            <strong>Content:</strong> {{ content_instance.content_type }}<br>
+            <strong>Description:</strong> {{ content_instance.description }}<br>
+        </ul>
+   
+    <form action="{% url 'review_form' movie_id=content_instance.id %}" method="post">
         {% csrf_token %}
-
-        <label for="content_title">Content Title:</label>
-        <select name="content_title" id="content_title" required>
-            <option value="" disabled selected>Select a title</option>
-            {% for title in content_titles %}
-                <option value="{{ title }}">{{ title }}</option>
-            {% endfor %}
-        </select>
-        <br>
 
         <label for="review_description">Write your review here:</label>
         <textarea name="review_description" id="review_description" required></textarea><br>
@@ -50,26 +24,21 @@
         <button type="submit">Submit Review</button>
     </form>
 
-    <!-- Display selected content's image and reviews -->
-    {% if selected_content %}
-        <h2>Reviews for {{ selected_content.title }}</h2>
+        <h2>Reviews for {{ content_instance.title }}</h2>
+            <img src="{{ content_instance.image.url }}" alt="{{ content_instance.title }}" style="width:200px; height:auto;">
 
-        {% if selected_content.image %}
-            <img src="{{ selected_content.image.url }}" alt="{{ selected_content.title }}" style="width:200px; height:auto;">
-        {% endif %}
-
-        {% if reviews %}
-            <ul>
-                {% for review in reviews %}
-                    <li>
-                        <strong>Rating:</strong> {{ review.rating }}<br>
-                        <strong>Review:</strong> {{ review.review_description }}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>No reviews found for {{ selected_content.title }}</p>
-        {% endif %}
-    {% endif %}
+            {% if reviews %}
+                <ul>
+                    {% for review in reviews %}
+                        <li>
+                            <strong>User:</strong> {{review.user}} <br>
+                            <strong>Rating:</strong> {{ review.rating }}<br>
+                            <strong>Review:</strong> {{ review.review_description }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% else %}
+            <p>No reviews found for {{ content_instance.title }}</p>
+            {% endif %}
 </body>
 </html>
