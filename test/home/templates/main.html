@@ -1,40 +1,238 @@
+<!-- main.html -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Movie List</title>
+    <title>Home - NERSK</title>
+
     <style>
-        .movie-container {
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background-color: #000;
+            color: #fff;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background: transparent;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .menu {
+            position: absolute;
+            top: 10px;
+            left: 20px;
+        }
+
+        .hamburger {
+            font-size: 2rem;
+            background: none;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+
+        #dropdown-menu {
+            position: absolute;
+            top: 2.5rem;
+            left: 0;
+            background: #222;
+            padding: 1rem;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+            border-radius: 5px;
+        }
+
+        #dropdown-menu a {
+            color: #fff;
+            text-decoration: none;
+            padding: 0.5rem 0;
+        }
+
+        #dropdown-menu.hidden {
+            display: none;
+        }
+
+        .search-bar {
+            padding: 0.5rem;
+            border-radius: 5px;
+            border: 1px solid #fff;
+            background-color: transparent;
+            color: #fff;
+            width: 200px;
+            position: absolute;
+            right: 20px;
+            top: 10px;
+        }
+
+        .search-bar::placeholder {
+            color: #888;
+        }
+
+        .search-bar::before {
+            content: '\1F50D'; /* Unicode search icon */
+            font-size: 1.5rem;
+            color: white;
+            position: absolute;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+        }
+
+        /* Featured Section Styling */
+        .featured {
+            position: relative;
+            height: 60vh; /* Take up more space on top */
+            background-color: #000;
+        }
+
+        .featured img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        /* Layout for Rows: Movies and TV Shows */
+        .content-container {
+            padding: 20px;
+            margin-top: 20px; /* Avoid overlap with fixed header */
+        }
+
+        .content-section {
+            margin-bottom: 30px;
+        }
+
+        .content-section h2 {
+            text-align: center;
+            color: #e50914;
+            margin-bottom: 20px;
+        }
+
+        .content-items {
             display: flex;
             flex-wrap: wrap;
+            justify-content: center;
             gap: 20px;
         }
-        .movie-item {
+
+        .content-item {
             width: 200px;
             text-align: center;
+            background-color: #222;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+            transition: transform 0.3s ease-in-out;
         }
-        .movie-item img {
+
+        .content-item img {
             width: 100%;
             height: auto;
+            cursor: pointer;
+        }
+
+        .content-item:hover {
+            transform: scale(1.05);
+        }
+
+        .stars {
+            margin-top: 10px;
+            color: #e50914;
+            font-size: 1.2rem;
         }
     </style>
 </head>
 <body>
 
-    <h1>Movie Titles and Posters</h1>
+    <header>
+        <div class="menu">
+            <button class="hamburger" onclick="toggleMenu()">☰</button>
+            <nav id="dropdown-menu" class="hidden">
+                <a href="#">Homepage</a>
+                <a href="#">Log In / Sign Up</a>
+                <a href="#">Account</a>
+            </nav>
+        </div>
+        <input type="text" placeholder="Search content..." class="search-bar">
+    </header>
 
-    <div class="movie-container">
-        {% for movie in movies %}
-            <div class="movie-item">
-                {% if movie.image %}
-                    <img src="{{ movie.image.url }}" alt="{{ movie.title }}">
-                {% endif %}
-                <h3>
-                    <a href="{% url 'review_form' movie.id %}">{{ movie.title }}</a>
-                </h3>
-            </div>
-        {% endfor %}
+    <!-- featured Section -->
+    <div class="featured">
+        <img id="featured-image" src="https://image.tmdb.org/t/p/original/4oYaZcYovt34sd60X2IL0ayg2js.jpg" alt="Featured Movie">
     </div>
+
+    <!-- content -->
+    <div class="content-container">
+
+        <!-- movies Section -->
+        <div class="content-section">
+            <h2>Movies</h2>
+            <div class="content-items">
+                {% for movie in movies %}
+                    <div class="content-item">
+                        {% if movie.image %}
+                            <a href="{% url 'review_form' movie.id %}">
+                                <img src="{{ movie.image.url }}" alt="{{ movie.title }}">
+                            </a>
+                        {% endif %}
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- TV shows Section -->
+        <div class="content-section">
+            <h2>TV Shows</h2>
+            <div class="content-items">
+                {% for tvshow in tvshows %}
+                    <div class="content-item">
+                        {% if tvshow.image %}
+                            <a href="{% url 'review_form' tvshow.id %}">
+                                <img src="{{ tvshow.image.url }}" alt="{{ tvshow.title }}">
+                            </a>
+                        {% endif %}
+                        <div class="stars">⭐⭐⭐⭐⭐</div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // js for the hamburger menu toggle 
+        function toggleMenu() {
+            const menu = document.getElementById("dropdown-menu");
+            menu.classList.toggle("hidden");
+        }
+
+        // lil slideshow
+        let featuredImages = [
+            "https://image.tmdb.org/t/p/original/4oYaZcYovt34sd60X2IL0ayg2js.jpg", 
+            "https://image.tmdb.org/t/p/original/8GnWDLn2AhnmkQ7hlQ9NJUYobSS.jpg", 
+            "https://image.tmdb.org/t/p/original/s59v2hO63DKLmM3FZPdsXML42rF.jpg"
+        ];
+
+        let currentIndex = 0;
+
+        function changeFeaturedImage() {
+            const featuredElement = document.getElementById("featured-image");
+            featuredElement.src = featuredImages[currentIndex];
+            currentIndex = (currentIndex + 1) % featuredImages.length;
+        }
+
+        setInterval(changeFeaturedImage, 5000);
+    </script>
 
 </body>
 </html>
