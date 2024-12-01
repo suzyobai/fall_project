@@ -2,7 +2,10 @@ from django.shortcuts import get_object_or_404, redirect
 from collections import OrderedDict #ordered dictionary to maintain order of data inputed into the databse
 from django.shortcuts import render
 from django.http import HttpResponse
-from .models import Content, Review
+from .models import Content, Review, User
+from django.contrib.auth import authenticate, login
+from django.contrib import messages
+
 from django.contrib.auth.views import LoginView, LogoutView
 #home page http responses defined to push data and see if the data has been pushed  
 def review_form(request, movie_id=None):
@@ -51,11 +54,27 @@ def view_reviews(request):
     reviews = Review.objects.all()
     return render(request, 'view_reviews.html', {'reviews': reviews})
 
-def main(request):
+def homepage(request):
     movies = Content.objects.all()  # Fetch all Content objects
     return render(request, 'main.html', {'movies': movies})
 
-def login(request):
+def login_view(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+        
+        if not User.objects.filter(username=username).exists():
+            messages.error(request, "Account does not exist. Please sign up.")
+            return render(request, 'login.html')
+
+        user = authenticate(request, username=username, password=password)
+        if user is not None:
+            login(request, user)  # built-in login function
+            return redirect('homepage')  # redirect to a homepage
+        else:
+            messages.error(request, "Invalid credentials. Please try again.")
+            return render(request, 'login.html')
+
     return render(request, 'login.html')
 
 def logout(request):

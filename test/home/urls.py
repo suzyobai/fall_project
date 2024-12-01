@@ -7,10 +7,10 @@ from home import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.main, name='main'),  # define the home page to view all movies on this site
+    path('homepage/', views.homepage, name='homepage'),  # define the home page to view all movies on this site, change to homepage
     path('review_form/<int:movie_id>/', views.review_form, name='review_form'),  #requires movie id to redirect to same page
     path('view_reviews/', views.view_reviews, name='view_reviews'),  # Pushes the data for reviews 
-    path('login/', views.login, name='login'),
+    path('', views.login_view, name='login_view'), #login is the inital page
     path('logout/', views.logout, name='logout'),
     path('sign-up/', views.signup, name='sign-up'),
 ]
