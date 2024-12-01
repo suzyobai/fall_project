@@ -81,4 +81,18 @@ def logout(request):
     return render(request, 'logout.html')
 
 def signup(request):
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, "Username already exists. Please choose another.")
+            return render(request, 'signup.html')
+
+        user = User.objects.create_user(username=username, password=password)
+        user.save()
+
+        messages.success(request, "Account successfully created. You can now log in.")
+        return redirect('login_view')  
+
     return render(request, 'signup.html')
