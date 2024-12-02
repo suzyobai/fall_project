@@ -219,12 +219,12 @@
      </header>
  
      <div class="content-wrapper">
-         <!-- Left Section (Poster) -->
+         <!-- left section (poster) -->
          <div class="poster-section">
              <img src="{{ content_instance.image.url }}" alt="{{ content_instance.title }}">
          </div>
  
-         <!-- Right Section (Review Form and Reviews) -->
+         <!-- right section (reviews & form)-->
          <div class="right-section">
              <!-- Review Form -->
              <div class="form-container">
@@ -241,7 +241,7 @@
                  </form>
              </div>
  
-             <!-- Reviews Section -->
+             <!-- review section -->
              <div class="reviews-container">
                  <h2>Reviews for {{ content_instance.title }}</h2>
                  {% if reviews %}
@@ -262,7 +262,7 @@
      </div>
  
      <script>
-         // JS for the hamburger menu toggle
+         // js for the hamburger menu toggle
          function toggleMenu() {
              const menu = document.getElementById("dropdown-menu");
              menu.classList.toggle("hidden");
