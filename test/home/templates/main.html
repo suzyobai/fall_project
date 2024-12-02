@@ -157,8 +157,9 @@
         <div class="menu">
             <button class="hamburger" onclick="toggleMenu()">☰</button>
             <nav id="dropdown-menu" class="hidden">
-                <a href="#">Homepage</a>
-                <a href="#">Log In / Sign Up</a>
+                <a href="{% url 'homepage' %}">Homepage</a>
+                <a href="{% url 'login_view' %}">Log In</a> 
+                <a href="{% url 'sign-up' %}">Sign Up</a>
                 <a href="#">Account</a>
             </nav>
         </div>
