@@ -163,7 +163,11 @@
                 <a href="#">Account</a>
             </nav>
         </div>
-        <input type="text" placeholder="Search content..." class="search-bar">
+        <form action="{% url 'search' %}" method="get">
+            <input type="text" placeholder="Search content..." name="q" class="search-bar">
+            <button type="submit">Search</button>
+        </form>
+        
     </header>
 
     <!-- featured Section -->

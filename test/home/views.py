@@ -96,3 +96,10 @@ def signup(request):
         return redirect('login_view')  
 
     return render(request, 'signup.html')
+
+def search(request):
+    query_string = request.GET.get('q', '')
+    if query_string:
+        search_results = Content.objects.filter(title__icontains=query_string, content_type='Movie')
+        return render(request, 'search_results.html', {'movies': search_results, 'query': query_string})
+    return render(request, 'search_results.html', {'query': None})
