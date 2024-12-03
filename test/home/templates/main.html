@@ -1,5 +1,3 @@
-<!-- homepage -->
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -42,7 +40,7 @@
 
         #dropdown-menu {
             position: absolute;
-            top: 2.5rem;
+            top: 3.5rem;
             left: 0;
             background: #222;
             padding: 1rem;
@@ -50,16 +48,26 @@
             flex-direction: column;
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
             border-radius: 5px;
+            width: 150px;
         }
 
         #dropdown-menu a {
             color: #fff;
             text-decoration: none;
-            padding: 0.5rem 0;
+            padding: 10px 5px;
+            font-size: 1.2rem;
         }
 
         #dropdown-menu.hidden {
             display: none;
+        }
+
+        form {
+            display: flex;
+            align-items: center;
+            position: absolute;
+            right: 20px;
+            top: 10px;
         }
 
         .search-bar {
@@ -69,29 +77,29 @@
             background-color: transparent;
             color: #fff;
             width: 200px;
-            position: absolute;
-            right: 20px;
-            top: 10px;
+            margin-right: 5px;
+            box-shadow: 0 0 8px 2px rgba(255, 255, 255, 1);
         }
 
         .search-bar::placeholder {
-            color: #888;
+            color: #ffffff;
         }
 
-        .search-bar::before {
-            content: '\1F50D'; /* Unicode search icon */
-            font-size: 1.5rem;
-            color: white;
-            position: absolute;
-            right: 10px;
-            top: 50%;
-            transform: translateY(-50%);
+        button {
+            margin-left: 10px;
+            padding: 0.5rem 1rem;
+            background: black;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+            margin-right: 40px;
         }
 
         /* featured section */
         .featured {
             position: relative;
-            height: 60vh; /* Take up more space on top */
+            height: 100vh;
             background-color: #000;
         }
 
@@ -104,7 +112,7 @@
         /* layout for rows */
         .content-container {
             padding: 20px;
-            margin-top: 20px; /* avoids overlap with fixed header */
+            margin-top: 60px; /* Adjusted to avoid overlap with fixed header */
         }
 
         .content-section {
@@ -145,8 +153,8 @@
         }
 
         .stars {
-            margin-top: 10px;
-            color: #1F51FF;
+            margin-top: 2px;
+            margin-bottom: 2px;
             font-size: 1.2rem;
         }
     </style>
@@ -167,7 +175,6 @@
             <input type="text" placeholder="Search content..." name="q" class="search-bar">
             <button type="submit">Search</button>
         </form>
-        
     </header>
 
     <!-- featured Section -->
@@ -177,10 +184,9 @@
 
     <!-- content -->
     <div class="content-container">
-
         <!-- movies Section -->
         <div class="content-section">
-            <h2>Movies</h2>
+            <h2>Movies / TV Shows</h2>
             <div class="content-items">
                 {% for movie in movies %}
                     <div class="content-item">
@@ -194,34 +200,16 @@
                 {% endfor %}
             </div>
         </div>
-
-        <!--tv shows section, need to filter later -->
-        <div class="content-section">
-            <h2>TV Shows</h2>
-            <div class="content-items">
-                {% for tvshow in tvshows %}
-                    <div class="content-item">
-                        {% if tvshow.image %}
-                            <a href="{% url 'review_form' tvshow.id %}">
-                                <img src="{{ tvshow.image.url }}" alt="{{ tvshow.title }}">
-                            </a>
-                        {% endif %}
-                        <div class="stars">⭐⭐⭐⭐⭐</div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-
     </div>
 
     <script>
-        // js for the hamburger menu toggle 
+        // JavaScript for the hamburger menu toggle 
         function toggleMenu() {
             const menu = document.getElementById("dropdown-menu");
             menu.classList.toggle("hidden");
         }
 
-        // lil slideshow, can add more later 
+        // Simple slideshow for the featured section 
         let featuredImages = [
             "https://image.tmdb.org/t/p/original/4oYaZcYovt34sd60X2IL0ayg2js.jpg", 
             "https://image.tmdb.org/t/p/original/8GnWDLn2AhnmkQ7hlQ9NJUYobSS.jpg", 
